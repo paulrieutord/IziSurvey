@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "317755149201",
+    "firebase_url": "https://izisurvey-df4d1.firebaseio.com",
+    "project_id": "izisurvey-df4d1",
+    "storage_bucket": "izisurvey-df4d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317755149201:android:d99fefc05d361d92",
+        "android_client_info": {
+          "package_name": "com.udp.paul.izisurvey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317755149201-si1as56f76bprjr2nj68lpkekrv4cocg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY9wKshhnV3OgVA0lBpcyh_cKzqJrbXVE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
