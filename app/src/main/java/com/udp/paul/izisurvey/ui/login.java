@@ -109,7 +109,7 @@ public class login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
 
             case R.id.register_user:
                 //1 = register
-                //startActivity(new Intent(getApplicationContext(), register_user.class));
+                startActivity(new Intent(getApplicationContext(), register_user.class));
                 break;
 
             case R.id.forgot_password:

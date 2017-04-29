@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">IziSurvey</string>
-    <string name="title_activity_login">login</string>
-    <string name="title_activity_main">login</string>
+
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_home">IziSurvey</string>
+    <string name="title_register_user">Registro de usuario</string>
 
     <!-- LOGIN -->
     <string name="prompt_email">Correo electrónico</string>
@@ -20,4 +22,13 @@
     <string name="error_user_doesnt_exist">Correo electrónico no registrado</string>
     <string name="register_user">Registrar.</string>
     <string name="forgot_password">Olvidaste tu contraseña?</string>
+
+    <!-- REGISTER USER -->
+    <string name="prompt_username">Nombre de usuario</string>
+    <string name="prompt_name">Nombre</string>
+    <string name="prompt_password_register">Contraseña</string>
+    <string name="prompt_last_name">Apellido</string>
+    <string name="prompt_repeat_password">Confirme contraseña</string>
+    <string name="action_sign_up">Registrar</string>
+    <string name="error_match_password">Contraseñas no coinciden</string>
 </resources>
