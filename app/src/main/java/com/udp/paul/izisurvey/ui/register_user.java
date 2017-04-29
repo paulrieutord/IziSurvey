@@ -76,8 +76,9 @@ public class register_user extends AppCompatActivity implements View.OnClickList
                     String lastName = lastNameView.getText().toString().trim();
                     String userName = userNameView.getText().toString().trim();
                     String email = emailView.getText().toString().trim();
+                    long longCreatedAt = System.currentTimeMillis();
 
-                    User userDB = new User(name, lastName, userName, email);
+                    User userDB = new User(name, lastName, userName, email, longCreatedAt);
 
                     mFirebaseDatabase.child(user.getUid()).setValue(userDB);
 
