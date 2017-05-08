@@ -31,4 +31,12 @@
     <string name="prompt_repeat_password">Confirme contraseña</string>
     <string name="action_sign_up">Registrar</string>
     <string name="error_match_password">Contraseñas no coinciden</string>
+
+    <!-- ITEMS NAVDRAWER -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="preferences">Preferencias</string>
+    <string name="about">Acerca de</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="misc">Misc</string>
 </resources>
