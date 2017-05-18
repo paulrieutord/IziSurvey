@@ -23,7 +23,6 @@
         android:paddingTop="10dp"
         android:layout_alignTop="@+id/icon_organization_item"
         android:layout_toEndOf="@+id/icon_organization_item"
-        android:layout_toStartOf="@+id/time_event_item"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
         android:textColor="@android:color/black"

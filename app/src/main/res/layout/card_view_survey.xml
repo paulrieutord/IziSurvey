@@ -51,6 +51,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:ellipsize="end"
+                android:textColor="@color/black"
                 android:text="Nombre encuesta que utiliza dos lineas como máximo, si no agrega tres puntos"
                 android:maxLines="2" />
 
