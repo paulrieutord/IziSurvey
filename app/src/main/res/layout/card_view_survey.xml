@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_survey_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_survey_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:id="@+id/cont_card_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/avatar_survey_item"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:padding="10dp"
+                android:layout_alignParentStart="true"
+                android:src="@android:drawable/sym_def_app_icon" />
+
+            <TextView
+                android:id="@+id/organization_survey_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/avatar_survey_item"
+                android:layout_alignParentTop="true"
+                android:textSize="15sp"
+                android:text="Nombre organización"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/name_survey_item"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@+id/organization_survey_item"
+                android:layout_toEndOf="@id/avatar_survey_item"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Nombre encue SADASD ASDASDASDASD sta"
+                android:maxLines="2" />
+
+            <TextView
+                android:id="@+id/expire_date_survey_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/avatar_survey_item"
+                android:paddingTop="10dp"
+                android:text="[o] xx/xx, xx:xx:xx hrs" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
