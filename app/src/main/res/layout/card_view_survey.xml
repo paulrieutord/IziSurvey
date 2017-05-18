@@ -36,6 +36,7 @@
                 android:layout_toEndOf="@id/avatar_survey_item"
                 android:layout_alignParentTop="true"
                 android:textSize="15sp"
+                android:ellipsize="end"
                 android:text="Nombre organización"
                 android:maxLines="1" />
 
@@ -49,7 +50,8 @@
                 android:paddingBottom="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Nombre encue SADASD ASDASDASDASD sta"
+                android:ellipsize="end"
+                android:text="Nombre encuesta que utiliza dos lineas como máximo, si no agrega tres puntos"
                 android:maxLines="2" />
 
             <TextView
