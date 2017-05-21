@@ -35,6 +35,8 @@
     <!-- ITEMS NAVDRAWER -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="surveys">Encuestas</string>
+    <string name="organizations">Organizaciones</string>
     <string name="preferences">Preferencias</string>
     <string name="about">Acerca de</string>
     <string name="logout">Cerrar sesión</string>

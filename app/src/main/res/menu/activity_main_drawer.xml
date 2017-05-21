@@ -8,6 +8,14 @@
     <item android:title="@string/misc">
         <menu>
             <item
+                android:id="@+id/nav_surveys"
+                android:icon="@drawable/ic_email_white_18dp"
+                android:title="@string/surveys" />
+            <item
+                android:id="@+id/nav_organizations"
+                android:icon="@drawable/ic_facebook"
+                android:title="@string/organizations" />
+            <item
                 android:id="@+id/nav_preferences"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/preferences" />

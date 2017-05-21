@@ -42,14 +42,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(home.this, register_event.class));
-            }
-        });*/
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -123,7 +115,19 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
         Fragment fragment;
 
-        if (id == R.id.nav_preferences) {
+        if (id == R.id.nav_surveys) {
+            fragment = new fm_surveys();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, fragment);
+            ft.commit();
+        } else if (id == R.id.nav_organizations) {
+            /*fragment = new fm_organizations();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, fragment);
+            ft.commit();*/
+
+            Toast.makeText(this, "No disponible.", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_preferences) {
             Toast.makeText(this, "No disponible.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_about) {
             new AlertDialog.Builder(this)
