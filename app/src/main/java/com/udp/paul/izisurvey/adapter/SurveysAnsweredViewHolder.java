@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -82,5 +83,7 @@ public class SurveysAnsweredViewHolder extends RecyclerView.ViewHolder implement
         i.putExtra(BUNDLE_EXTRAS, extras);
 
         mContext.startActivity(i);*/
+
+        Toast.makeText(mContext, "No disponible.", Toast.LENGTH_SHORT).show();
     }
 }

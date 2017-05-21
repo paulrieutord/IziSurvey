@@ -9,11 +9,11 @@
         <menu>
             <item
                 android:id="@+id/nav_surveys"
-                android:icon="@drawable/ic_email_white_18dp"
+                android:icon="@drawable/ic_content_paste_black_24px"
                 android:title="@string/surveys" />
             <item
                 android:id="@+id/nav_organizations"
-                android:icon="@drawable/ic_facebook"
+                android:icon="@drawable/ic_people_black_24px"
                 android:title="@string/organizations" />
             <item
                 android:id="@+id/nav_preferences"
