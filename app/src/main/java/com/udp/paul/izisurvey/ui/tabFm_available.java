@@ -19,7 +19,7 @@ import com.udp.paul.izisurvey.adapter.SurveysAvailableViewHolder;
 
 public class tabFm_available extends Fragment {
 
-    private RecyclerView recView_events;
+    private RecyclerView recView_surveys;
     private FirebaseRecyclerAdapter adapter_surveys;
 
     private FirebaseDatabase FBDatabase;
@@ -45,7 +45,7 @@ public class tabFm_available extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab_fm_available, container, false);
 
-        recView_events = (RecyclerView) rootView.findViewById(R.id.recView_survey_available);
+        recView_surveys = (RecyclerView) rootView.findViewById(R.id.recView_survey_available);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -71,9 +71,9 @@ public class tabFm_available extends Fragment {
             }
         };
 
-        recView_events.setHasFixedSize(true);
-        recView_events.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recView_events.setAdapter(adapter_surveys);
+        recView_surveys.setHasFixedSize(true);
+        recView_surveys.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recView_surveys.setAdapter(adapter_surveys);
     }
 
     @Override

@@ -8,18 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-//import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.udp.paul.izisurvey.R;
-//import com.udp.paul.izisurvey.adapter.EventsViewHolder;
-//import com.udp.paul.izisurvey.model.Event;
+import com.udp.paul.izisurvey.adapter.SurveysAnsweredViewHolder;
 
 public class tabFm_answered extends Fragment {
 
-    private RecyclerView recView_events;
-    //private FirebaseRecyclerAdapter adapter_events;
+    private RecyclerView recView_surveys;
+    private FirebaseRecyclerAdapter adapter_surveys;
 
     private FirebaseDatabase FBDatabase;
     private DatabaseReference FBReference;
@@ -44,12 +45,13 @@ public class tabFm_answered extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab_fm_answered, container, false);
 
-        recView_events = (RecyclerView) rootView.findViewById(R.id.recView_survey_answered);
+        recView_surveys = (RecyclerView) rootView.findViewById(R.id.recView_survey_answered);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         FBDatabase = FirebaseDatabase.getInstance();
-        //FBReference = FBDatabase.getReference("organization");
-        //queryRef = FBReference.orderByChild("countUsers");
-
+        FBReference = FBDatabase.getReference("users").child(user.getUid()).child("surveys");
+        queryRef = FBReference.orderByValue().equalTo(false);
         return rootView;
     }
 
@@ -57,29 +59,26 @@ public class tabFm_answered extends Fragment {
     public void onStart() {
         super.onStart();
 
-        /*adapter_events = new FirebaseRecyclerAdapter<Event, EventsViewHolder>(
-                Event.class,
-                R.layout.event_item,
-                EventsViewHolder.class,
+        adapter_surveys = new FirebaseRecyclerAdapter<Boolean, SurveysAnsweredViewHolder>(
+                Boolean.class,
+                R.layout.card_view_survey,
+                SurveysAnsweredViewHolder.class,
                 queryRef
         ) {
             @Override
-            protected void populateViewHolder(EventsViewHolder viewHolder, Event model, int position) {
-                viewHolder.bindEvent(model, adapter_events.getRef(position).getKey());
+            protected void populateViewHolder(SurveysAnsweredViewHolder viewHolder, Boolean model, int position) {
+                viewHolder.bindEvent(adapter_surveys.getRef(position).getKey());
             }
         };
 
-        LinearLayoutManager layoutM = new LinearLayoutManager(getActivity());
-        layoutM.setReverseLayout(true);
-        layoutM.setStackFromEnd(true);
-        recView_events.setHasFixedSize(true);
-        recView_events.setLayoutManager(layoutM);
-        recView_events.setAdapter(adapter_events);*/
+        recView_surveys.setHasFixedSize(true);
+        recView_surveys.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recView_surveys.setAdapter(adapter_surveys);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //adapter_events.cleanup();
+        adapter_surveys.cleanup();
     }
 }
