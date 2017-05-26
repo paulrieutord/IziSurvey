@@ -17,7 +17,7 @@
         android:src="@android:drawable/sym_def_app_icon" />
 
     <TextView
-        android:id="@+id/title_event_item"
+        android:id="@+id/name_organization_item"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:paddingTop="10dp"
@@ -31,7 +31,7 @@
         android:maxLines="2" />
 
     <TextView
-        android:id="@+id/place_event_item"
+        android:id="@+id/category_organization_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

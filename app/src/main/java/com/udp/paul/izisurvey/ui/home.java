@@ -1,7 +1,6 @@
 package com.udp.paul.izisurvey.ui;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -63,11 +63,13 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             // Get user value
                             User userObject = dataSnapshot.getValue(User.class);
                             navUsername.setText(userObject.getName()+" "+userObject.getLastName());
+                            Log.d("SUCCESS", userObject.getName()+" "+userObject.getLastName());
                             navEmailUser.setText(userObject.getEmail());
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
+                            Log.d("ERROR", databaseError.toString());
                         }
                     });
         }
@@ -121,12 +123,10 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             ft.replace(R.id.content_main, fragment);
             ft.commit();
         } else if (id == R.id.nav_organizations) {
-            /*fragment = new fm_organizations();
+            fragment = new fm_organizations();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, fragment);
-            ft.commit();*/
-
-            Toast.makeText(this, "No disponible.", Toast.LENGTH_SHORT).show();
+            ft.commit();
         } else if (id == R.id.nav_preferences) {
             Toast.makeText(this, "No disponible.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_about) {
