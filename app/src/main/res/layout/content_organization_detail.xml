@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_detail_organization"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.udp.paul.izisurvey.ui.organization_detail"
+    tools:showIn="@layout/activity_organization_detail">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingStart="75dp"
+            android:paddingEnd="75dp"
+            android:textSize="@dimen/titles_organization_detail"
+            android:textStyle="bold"
+            android:textColor="@color/text_details"
+            android:text="CATEGORIA" />
+
+        <TextView
+            android:id="@+id/category_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/category"
+            android:paddingTop="5dp"
+            android:paddingStart="75dp"
+            android:paddingEnd="75dp"
+            android:textSize="@dimen/values_organization_detail"
+            android:text="null" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/category_value"
+            android:paddingStart="75dp"
+            android:paddingEnd="75dp"
+            android:textSize="@dimen/titles_organization_detail"
+            android:textStyle="bold"
+            android:textColor="@color/text_details"
+            android:text="DESCRIPCIÓN" />
+
+        <TextView
+            android:id="@+id/description_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/description"
+            android:paddingTop="5dp"
+            android:paddingStart="75dp"
+            android:paddingEnd="75dp"
+            android:textSize="@dimen/values_organization_detail"
+            android:text="null" />
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

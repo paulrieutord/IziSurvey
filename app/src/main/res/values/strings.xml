@@ -4,6 +4,7 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_home">IziSurvey</string>
     <string name="title_register_user">Registro de usuario</string>
+    <string name="title_organization_detail">Dettales de organización</string>
 
     <!-- LOGIN -->
     <string name="prompt_email">Correo electrónico</string>

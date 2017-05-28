@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,12 +23,7 @@ import com.google.firebase.storage.StorageReference;
 //import com.squareup.picasso.Picasso;
 import com.udp.paul.izisurvey.R;
 import com.udp.paul.izisurvey.model.Organization;
-//import com.udp.paul.izisurvey.ui.survey_detail;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import com.udp.paul.izisurvey.ui.organization_detail;
 
 public class OrganizationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -63,6 +59,7 @@ public class OrganizationViewHolder extends RecyclerView.ViewHolder implements V
         avatar = (ImageView) itemView.findViewById(R.id.icon_organization_item);
         name = (TextView) itemView.findViewById(R.id.name_organization_item);
         category = (TextView) itemView.findViewById(R.id.category_organization_item);
+        mView.setOnClickListener(this);
 
         mDatabase.child("organizations").child(mKey).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -101,13 +98,14 @@ public class OrganizationViewHolder extends RecyclerView.ViewHolder implements V
 
     @Override
     public void onClick(View v) {
-        /*Intent i = new Intent(mContext, event_detail.class);
+        Log.d("CLICK", "SI");
+        Intent i = new Intent(mContext, organization_detail.class);
 
         Bundle extras = new Bundle();
         extras.putString(EXTRA_KEY, mKey);
         extras.putString(EXTRA_TITLE, mName);
         i.putExtra(BUNDLE_EXTRAS, extras);
 
-        mContext.startActivity(i);*/
+        mContext.startActivity(i);
     }
 }
