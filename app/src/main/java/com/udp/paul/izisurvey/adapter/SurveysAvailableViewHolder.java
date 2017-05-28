@@ -16,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udp.paul.izisurvey.R;
 import com.udp.paul.izisurvey.model.Survey;
-//import com.udp.paul.izisurvey.ui.survey_questions;
+import com.udp.paul.izisurvey.ui.survey_questions;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -35,6 +35,7 @@ public class SurveysAvailableViewHolder extends RecyclerView.ViewHolder implemen
     private TextView titleSurvey;
     private TextView organizationSurvey;
     private TextView expireDateSurvey;
+    private String mTitleEvent;
 
     private DatabaseReference mDatabase;
 
@@ -61,7 +62,8 @@ public class SurveysAvailableViewHolder extends RecyclerView.ViewHolder implemen
                 Survey eventObject = dataSnapshot.getValue(Survey.class);
 
                 titleSurvey.setText(eventObject.getName());
-                //organizationSurvey.setText(eventObject.getOrganization());
+                mTitleEvent = eventObject.getName();
+                organizationSurvey.setText(eventObject.getOrganization());
                 String formatDate = new SimpleDateFormat("HH:mm", Locale.US).format(eventObject.getCreatedAt())+" hrs.";
                 expireDateSurvey.setText(formatDate);
             }
@@ -75,15 +77,13 @@ public class SurveysAvailableViewHolder extends RecyclerView.ViewHolder implemen
 
     @Override
     public void onClick(View v) {
-        /*Intent i = new Intent(mContext, survey_questions.class);
+        Intent i = new Intent(mContext, survey_questions.class);
 
         Bundle extras = new Bundle();
         extras.putString(EXTRA_KEY, mKey);
         extras.putString(EXTRA_TITLE, mTitleEvent);
         i.putExtra(BUNDLE_EXTRAS, extras);
 
-        mContext.startActivity(i);*/
-
-        Toast.makeText(mContext, "No disponible.", Toast.LENGTH_SHORT).show();
+        mContext.startActivity(i);
     }
 }

@@ -5,6 +5,7 @@
     <string name="title_activity_home">IziSurvey</string>
     <string name="title_register_user">Registro de usuario</string>
     <string name="title_organization_detail">Dettales de organización</string>
+    <string name="title_survey_questions">Encuesta</string>
 
     <!-- LOGIN -->
     <string name="prompt_email">Correo electrónico</string>

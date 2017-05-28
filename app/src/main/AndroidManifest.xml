@@ -40,5 +40,9 @@
             android:name=".ui.organization_detail"
             android:label="@string/title_organization_detail"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.survey_questions"
+            android:label="@string/title_survey_questions"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>
