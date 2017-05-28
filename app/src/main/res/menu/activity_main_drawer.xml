@@ -2,23 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-
+        <item
+            android:id="@+id/nav_surveys"
+            android:icon="@drawable/ic_content_paste_black_24px"
+            android:title="@string/surveys" />
+        <item
+            android:id="@+id/nav_organizations"
+            android:icon="@drawable/ic_people_black_24px"
+            android:title="@string/organizations" />
     </group>
 
     <item android:title="@string/misc">
         <menu>
-            <item
-                android:id="@+id/nav_surveys"
-                android:icon="@drawable/ic_content_paste_black_24px"
-                android:title="@string/surveys" />
-            <item
-                android:id="@+id/nav_organizations"
-                android:icon="@drawable/ic_people_black_24px"
-                android:title="@string/organizations" />
-            <item
+            <!-- <item
                 android:id="@+id/nav_preferences"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="@string/preferences" />
+                android:title="@string/preferences" /> -->
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_menu_terms"

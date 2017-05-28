@@ -127,9 +127,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, fragment);
             ft.commit();
-        } else if (id == R.id.nav_preferences) {
+        } /*else if (id == R.id.nav_preferences) {
             Toast.makeText(this, "No disponible.", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_about) {
+        }*/ else if (id == R.id.nav_about) {
             new AlertDialog.Builder(this)
                     .setTitle("IziSurvey")
                     .setMessage("Proyecto para TICs III")
