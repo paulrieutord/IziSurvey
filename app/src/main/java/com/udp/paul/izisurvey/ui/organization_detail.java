@@ -6,6 +6,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class organization_detail extends AppCompatActivity {
     private FirebaseDatabase FBDatabase;
     private DatabaseReference FBReferenceOrganization;
     private DatabaseReference FBReferenceUser;
+    private DatabaseReference FBReferenceSurveyAnswer;
     private StorageReference imageReference;
     private FirebaseUser user;
 
@@ -82,6 +84,7 @@ public class organization_detail extends AppCompatActivity {
         FBDatabase = FirebaseDatabase.getInstance();
         FBReferenceOrganization = FBDatabase.getReference("organizations");
         FBReferenceUser = FBDatabase.getReference("users");
+        FBReferenceSurveyAnswer = FBDatabase.getReference("surveyAnswers");
 
         fab = (FloatingActionButton) findViewById(R.id.fab_detail_organization);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,12 +92,62 @@ public class organization_detail extends AppCompatActivity {
             public void onClick(View view) {
                 if (childExists) {
                     FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").child(user.getUid()).getRef().removeValue();
+                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addValueEventListener(new ValueEventListener(){
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                final String keySurvey = String.valueOf(snapshot.getKey());
+
+                                FBReferenceSurveyAnswer.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if (!snapshot.hasChild(keySurvey)) {
+                                            FBReferenceUser.child(user.getUid()).child("surveys").child(keySurvey).getRef().removeValue();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                    }
+                                });
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
                     FBReferenceUser.child(user.getUid()).child("organizations").child(extras.getString(EXTRA_KEY)).getRef().removeValue();
                     fab.setImageResource(R.drawable.ic_menu_add);
                     fab.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
                     childExists = false;
                 } else {
                     FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").child(user.getUid()).getRef().setValue(true);
+                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addValueEventListener(new ValueEventListener(){
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                final String keySurvey = String.valueOf(snapshot.getKey());
+
+                                FBReferenceSurveyAnswer.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if (!snapshot.hasChild(keySurvey)) {
+                                            FBReferenceUser.child(user.getUid()).child("surveys").child(keySurvey).getRef().setValue(true);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                    }
+                                });
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
                     FBReferenceUser.child(user.getUid()).child("organizations").child(extras.getString(EXTRA_KEY)).getRef().setValue(extras.getString(EXTRA_TITLE));
                     fab.setImageResource(R.drawable.ic_check_black_24px);
                     fab.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent));
