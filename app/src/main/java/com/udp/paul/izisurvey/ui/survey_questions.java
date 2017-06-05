@@ -6,12 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -143,6 +146,20 @@ public class survey_questions extends AppCompatActivity {
                         }
                     }
                 }
+
+                Button sendQuestions = new Button(getApplicationContext());
+                sendQuestions.setText("ENVIAR");
+
+                container_layout.addView(sendQuestions);
+
+                LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+                sendQuestions.setLayoutParams(buttonParams);
+                sendQuestions.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(survey_questions.this, "ENVIADO", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
