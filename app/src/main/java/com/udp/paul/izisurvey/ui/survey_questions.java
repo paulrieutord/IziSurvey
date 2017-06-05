@@ -1,9 +1,11 @@
 package com.udp.paul.izisurvey.ui;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -46,84 +48,99 @@ public class survey_questions extends AppCompatActivity {
         container_layout = (LinearLayout) findViewById(R.id.container_survey_questions);
 
         FBDatabase = FirebaseDatabase.getInstance();
-        FBReference = FBDatabase.getReference("surveys").child(extras.getString(EXTRA_KEY)).child("questions");
+        FBReference = FBDatabase.getReference("surveys").child(extras.getString(EXTRA_KEY)).child("questionSections");
         queryRef = FBReference.orderByChild("order");
 
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String type = String.valueOf(snapshot.child("type").getValue());
+                for (DataSnapshot snapshotSection : dataSnapshot.getChildren()) {
+                    TextView titleSection = new TextView(getApplicationContext());
 
-                    TextView title = new TextView(getApplicationContext());
+                    String titleSectionString = String.valueOf(String.valueOf(snapshotSection.child("description").getValue()));
+                    titleSection.setText(titleSectionString);
+                    titleSection.setTextColor(Color.BLACK);
+                    titleSection.setTypeface(null, Typeface.BOLD);
 
-                    String titleString = String.valueOf(snapshot.child("order").getValue()) + ") " + String.valueOf(snapshot.child("description").getValue());
-                    title.setText(titleString);
-                    title.setTextColor(Color.BLACK);
+                    container_layout.addView(titleSection);
 
-                    container_layout.addView(title);
+                    LinearLayout.LayoutParams textViewSectionParams = (LinearLayout.LayoutParams) titleSection.getLayoutParams();
+                    textViewSectionParams.setMargins(0, 0, 0, 40);
+                    titleSection.setLayoutParams(textViewSectionParams);
 
-                    LinearLayout.LayoutParams textViewParams = (LinearLayout.LayoutParams) title.getLayoutParams();
-                    textViewParams.setMargins(0, 0, 0, 40);
-                    title.setLayoutParams(textViewParams);
+                    for (DataSnapshot snapshot : snapshotSection.child("questions").getChildren()) {
+                        String type = String.valueOf(snapshot.child("type").getValue());
 
-                    switch (type) {
-                        //ONLY ONE OPTION
-                        case "1":
-                            RadioGroup group = new RadioGroup(getApplicationContext());
-                            group.setOrientation(RadioGroup.VERTICAL);
+                        TextView title = new TextView(getApplicationContext());
 
-                            for (DataSnapshot options : snapshot.child("options").getChildren()) {
-                                String option = String.valueOf(options.getValue());
+                        String titleString = String.valueOf(snapshot.child("order").getValue()) + ") " + String.valueOf(snapshot.child("description").getValue());
+                        title.setText(titleString);
+                        title.setTextColor(Color.BLACK);
 
-                                RadioButton opt = new RadioButton(getApplicationContext());
-                                opt.setText(option);
-                                opt.setTextColor(Color.BLACK);
-                                group.addView(opt);
+                        container_layout.addView(title);
 
-                                RadioGroup.LayoutParams radioParams = (RadioGroup.LayoutParams) opt.getLayoutParams();
-                                radioParams.setMargins(0, 0, 0, 30);
-                                opt.setLayoutParams(radioParams);
-                            }
+                        LinearLayout.LayoutParams textViewParams = (LinearLayout.LayoutParams) title.getLayoutParams();
+                        textViewParams.setMargins(0, 0, 0, 40);
+                        title.setLayoutParams(textViewParams);
 
-                            container_layout.addView(group);
+                        switch (type) {
+                            //ONLY ONE OPTION
+                            case "1":
+                                RadioGroup group = new RadioGroup(getApplicationContext());
+                                group.setOrientation(RadioGroup.VERTICAL);
 
-                            break;
-                        //TEXT AS ANSWER
-                        case "2":
-                            EditText textAnswer = new EditText(getApplicationContext());
-                            textAnswer.setMaxLines(5);
-                            textAnswer.setTextColor(Color.BLACK);
+                                for (DataSnapshot options : snapshot.child("options").getChildren()) {
+                                    String option = String.valueOf(options.getValue());
 
-                            container_layout.addView(textAnswer);
+                                    RadioButton opt = new RadioButton(getApplicationContext());
+                                    opt.setText(option);
+                                    opt.setTextColor(Color.BLACK);
+                                    group.addView(opt);
 
-                            LinearLayout.LayoutParams editParams = (LinearLayout.LayoutParams) textAnswer.getLayoutParams();
-                            editParams.setMargins(0, 0, 0, 30);
-                            editParams.height = 150;
-                            textAnswer.setLayoutParams(editParams);
+                                    RadioGroup.LayoutParams radioParams = (RadioGroup.LayoutParams) opt.getLayoutParams();
+                                    radioParams.setMargins(0, 0, 0, 30);
+                                    opt.setLayoutParams(radioParams);
+                                }
 
-                            break;
-                        //MULTIPLE
-                        case "3":
-                            LinearLayout checkGroup = new LinearLayout(getApplicationContext());
-                            checkGroup.setOrientation(RadioGroup.VERTICAL);
+                                container_layout.addView(group);
 
-                            for (DataSnapshot options : snapshot.child("options").getChildren()) {
-                                String option = String.valueOf(options.getValue());
+                                break;
+                            //TEXT AS ANSWER
+                            case "2":
+                                EditText textAnswer = new EditText(getApplicationContext());
+                                textAnswer.setMaxLines(5);
+                                textAnswer.setTextColor(Color.BLACK);
 
-                                CheckBox opt = new CheckBox(getApplicationContext());
-                                opt.setText(option);
-                                opt.setTextColor(Color.BLACK);
-                                checkGroup.addView(opt);
+                                container_layout.addView(textAnswer);
 
-                                LinearLayout.LayoutParams checkParams = (LinearLayout.LayoutParams) opt.getLayoutParams();
-                                checkParams.setMargins(0, 0, 0, 30);
-                                opt.setLayoutParams(checkParams);
-                            }
+                                LinearLayout.LayoutParams editParams = (LinearLayout.LayoutParams) textAnswer.getLayoutParams();
+                                editParams.setMargins(0, 0, 0, 30);
+                                editParams.height = 150;
+                                textAnswer.setLayoutParams(editParams);
 
-                            container_layout.addView(checkGroup);
+                                break;
+                            //MULTIPLE
+                            case "3":
+                                LinearLayout checkGroup = new LinearLayout(getApplicationContext());
+                                checkGroup.setOrientation(RadioGroup.VERTICAL);
 
-                            break;
+                                for (DataSnapshot options : snapshot.child("options").getChildren()) {
+                                    String option = String.valueOf(options.getValue());
+
+                                    CheckBox opt = new CheckBox(getApplicationContext());
+                                    opt.setText(option);
+                                    opt.setTextColor(Color.BLACK);
+                                    checkGroup.addView(opt);
+
+                                    LinearLayout.LayoutParams checkParams = (LinearLayout.LayoutParams) opt.getLayoutParams();
+                                    checkParams.setMargins(0, 0, 0, 30);
+                                    opt.setLayoutParams(checkParams);
+                                }
+
+                                container_layout.addView(checkGroup);
+
+                                break;
+                        }
                     }
                 }
             }
