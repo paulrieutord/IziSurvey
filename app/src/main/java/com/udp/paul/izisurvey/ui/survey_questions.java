@@ -97,6 +97,7 @@ public class survey_questions extends AppCompatActivity {
 
                                     RadioButton opt = new RadioButton(getApplicationContext());
                                     opt.setText(option);
+                                    opt.setId(Integer.valueOf(options.getKey()));
                                     opt.setTextColor(Color.BLACK);
                                     group.addView(opt);
 
@@ -132,6 +133,7 @@ public class survey_questions extends AppCompatActivity {
 
                                     CheckBox opt = new CheckBox(getApplicationContext());
                                     opt.setText(option);
+                                    opt.setId(Integer.valueOf(options.getKey()));
                                     opt.setTextColor(Color.BLACK);
                                     checkGroup.addView(opt);
 
@@ -174,12 +176,31 @@ public class survey_questions extends AppCompatActivity {
     public boolean formIsValid(LinearLayout layout) {
         for (int i = 0; i < layout.getChildCount(); i++) {
             View v = layout.getChildAt(i);
-            if (v instanceof EditText) {
-                Log.d("PREGUNTA TIPO", "EDITTEXT EN INDEX " + String.valueOf(i));
-            } else if (v instanceof RadioGroup) {
-                Log.d("PREGUNTA TIPO", "RADIOGROUP EN INDEX " + String.valueOf(i));
+
+            if (v instanceof RadioGroup) {
+                int idRadioButton = ((RadioGroup) v).getCheckedRadioButtonId();
+                View radioButton = v.findViewById(idRadioButton);
+                int radioId = ((RadioGroup) v).indexOfChild(radioButton);
+                RadioButton btn = (RadioButton) ((RadioGroup) v).getChildAt(radioId);
+                String selection = (String) btn.getText();
+
+                Log.d("SELECCION", idRadioButton + ") " + selection);
+            } else if (v instanceof EditText) {
+                String text = ((EditText) v).getText().toString();
+
+                Log.d("TEXT", text);
             } else if (v instanceof LinearLayout) {
-                Log.d("PREGUNTA TIPO", "LINEARLAYOUT EN INDEX " + String.valueOf(i));
+                for (int j = 0; j < ((LinearLayout) v).getChildCount(); j++) {
+                    View vv = ((LinearLayout) v).getChildAt(j);
+
+                    if (vv instanceof CheckBox) {
+                        if (((CheckBox) vv).isChecked()) {
+                            String text = ((CheckBox) vv).getText().toString();
+
+                            Log.d("CHECKBOX", String.valueOf(vv.getId()) + ") " + text );
+                        }
+                    }
+                }
             }
         }
         return true;
