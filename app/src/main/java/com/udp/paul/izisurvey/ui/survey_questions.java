@@ -157,7 +157,11 @@ public class survey_questions extends AppCompatActivity {
                 sendQuestions.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(survey_questions.this, "ENVIADO", Toast.LENGTH_SHORT).show();
+                        if (formIsValid(container_layout)) {
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Debe responder todas las preguntas.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
@@ -165,5 +169,19 @@ public class survey_questions extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+    public boolean formIsValid(LinearLayout layout) {
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+            if (v instanceof EditText) {
+                Log.d("PREGUNTA TIPO", "EDITTEXT EN INDEX " + String.valueOf(i));
+            } else if (v instanceof RadioGroup) {
+                Log.d("PREGUNTA TIPO", "RADIOGROUP EN INDEX " + String.valueOf(i));
+            } else if (v instanceof LinearLayout) {
+                Log.d("PREGUNTA TIPO", "LINEARLAYOUT EN INDEX " + String.valueOf(i));
+            }
+        }
+        return true;
     }
 }
