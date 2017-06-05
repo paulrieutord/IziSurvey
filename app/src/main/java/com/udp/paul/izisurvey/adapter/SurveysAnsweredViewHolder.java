@@ -61,7 +61,7 @@ public class SurveysAnsweredViewHolder extends RecyclerView.ViewHolder implement
                 Survey eventObject = dataSnapshot.getValue(Survey.class);
 
                 titleSurvey.setText(eventObject.getName());
-                //organizationSurvey.setText(eventObject.getOrganization());
+                organizationSurvey.setText(eventObject.getOrganization());
                 String formatDate = new SimpleDateFormat("HH:mm", Locale.US).format(eventObject.getCreatedAt())+" hrs.";
                 expireDateSurvey.setText(formatDate);
             }
