@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udp.paul.izisurvey.R;
+import com.udp.paul.izisurvey.model.Organization;
 import com.udp.paul.izisurvey.model.Survey;
 import com.udp.paul.izisurvey.ui.survey_questions;
 
@@ -38,6 +39,7 @@ public class SurveysAvailableViewHolder extends RecyclerView.ViewHolder implemen
     private String mTitleEvent;
 
     private DatabaseReference mDatabase;
+    private DatabaseReference mOrganization;
 
     public SurveysAvailableViewHolder(View itemView) {
         super(itemView);
@@ -45,6 +47,7 @@ public class SurveysAvailableViewHolder extends RecyclerView.ViewHolder implemen
         mView = itemView;
         mContext = itemView.getContext();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mOrganization = mDatabase.child("organizations");
     }
 
     public void bindEvent (String key) {
@@ -63,7 +66,20 @@ public class SurveysAvailableViewHolder extends RecyclerView.ViewHolder implemen
 
                 titleSurvey.setText(eventObject.getName());
                 mTitleEvent = eventObject.getName();
-                organizationSurvey.setText(eventObject.getOrganization());
+
+                mOrganization.child(eventObject.getOrganization()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        organizationSurvey.setText(dataSnapshot.getValue(Organization.class).getName());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 String formatDate = new SimpleDateFormat("HH:mm", Locale.US).format(eventObject.getCreatedAt())+" hrs.";
                 expireDateSurvey.setText(formatDate);
             }

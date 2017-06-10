@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udp.paul.izisurvey.R;
+import com.udp.paul.izisurvey.model.Organization;
 import com.udp.paul.izisurvey.model.Survey;
 //import com.udp.paul.izisurvey.ui.survey_questions;
 
@@ -37,6 +38,7 @@ public class SurveysAnsweredViewHolder extends RecyclerView.ViewHolder implement
     private TextView expireDateSurvey;
 
     private DatabaseReference mDatabase;
+    private DatabaseReference mOrganization;
 
     public SurveysAnsweredViewHolder(View itemView) {
         super(itemView);
@@ -44,6 +46,7 @@ public class SurveysAnsweredViewHolder extends RecyclerView.ViewHolder implement
         mView = itemView;
         mContext = itemView.getContext();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mOrganization = mDatabase.child("organizations");
     }
 
     public void bindEvent (String key) {
@@ -61,7 +64,20 @@ public class SurveysAnsweredViewHolder extends RecyclerView.ViewHolder implement
                 Survey eventObject = dataSnapshot.getValue(Survey.class);
 
                 titleSurvey.setText(eventObject.getName());
-                organizationSurvey.setText(eventObject.getOrganization());
+
+                mOrganization.child(eventObject.getOrganization()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        organizationSurvey.setText(dataSnapshot.getValue(Organization.class).getName());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 String formatDate = new SimpleDateFormat("HH:mm", Locale.US).format(eventObject.getCreatedAt())+" hrs.";
                 expireDateSurvey.setText(formatDate);
             }
