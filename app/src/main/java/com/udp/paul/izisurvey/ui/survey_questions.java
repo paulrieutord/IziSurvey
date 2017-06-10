@@ -27,6 +27,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.udp.paul.izisurvey.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class survey_questions extends AppCompatActivity {
 
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
@@ -38,8 +41,10 @@ public class survey_questions extends AppCompatActivity {
     private FirebaseDatabase FBDatabase;
     private DatabaseReference FBReference;
     private DatabaseReference FBSurveyAnswers;
+    private DatabaseReference FBReferenceUser;
     private FirebaseUser currentUser;
     private Query queryRef;
+    private List<String> questionKeys = new ArrayList<>();
 
     LinearLayout container_layout;
 
@@ -58,6 +63,8 @@ public class survey_questions extends AppCompatActivity {
         FBDatabase = FirebaseDatabase.getInstance();
         FBReference = FBDatabase.getReference("surveys").child(extras.getString(EXTRA_KEY)).child("questionSections");
         queryRef = FBReference.orderByChild("order");
+
+        FBReferenceUser = FBDatabase.getReference("users");
 
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -78,6 +85,7 @@ public class survey_questions extends AppCompatActivity {
 
                     for (DataSnapshot snapshot : snapshotSection.child("questions").getChildren()) {
                         String type = String.valueOf(snapshot.child("type").getValue());
+                        questionKeys.add(String.valueOf(snapshot.getKey()));
 
                         TextView title = new TextView(getApplicationContext());
 
@@ -159,6 +167,7 @@ public class survey_questions extends AppCompatActivity {
                         textViewParams.setMargins(0, 0, 0, 40);
                         title.setLayoutParams(textViewParams);
                     }
+
                 }
 
                 Button sendQuestions = new Button(getApplicationContext());
@@ -232,6 +241,7 @@ public class survey_questions extends AppCompatActivity {
         FBSurveyAnswers = FBDatabase.getReference("surveyAnswers").child(currentUser.getUid()).child(extras.getString(EXTRA_KEY));
 
         int sectionIndex = 0;
+        int questionIndex = 0;
 
         for (int i = 0; i < layout.getChildCount(); i++) {
             View v = layout.getChildAt(i);
@@ -244,6 +254,11 @@ public class survey_questions extends AppCompatActivity {
                 RadioButton btn = (RadioButton) ((RadioGroup) v).getChildAt(radioId);
                 String selection = (String) btn.getText();
 
+                FBSurveyAnswers.child("section" + sectionIndex).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf(idRadioButton)).getRef().setValue(selection);
+                FBSurveyAnswers.child("section" + sectionIndex).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(1);
+
+                questionIndex++;
+
                 //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
                 //Log.d("SELECCION", idRadioButton + ") " + selection);
             } else if (v instanceof LinearLayout) {
@@ -251,6 +266,11 @@ public class survey_questions extends AppCompatActivity {
 
                 if (vvv instanceof EditText) {
                     String text = ((EditText) vvv).getText().toString().trim();
+
+                    FBSurveyAnswers.child("section" + sectionIndex).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf("text")).getRef().setValue(text);
+                    FBSurveyAnswers.child("section" + sectionIndex).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(2);
+
+                    questionIndex++;
 
                     //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
                     //Log.d("TEXT", text);
@@ -262,13 +282,21 @@ public class survey_questions extends AppCompatActivity {
                             if (((CheckBox) vv).isChecked()) {
                                 String text = ((CheckBox) vv).getText().toString();
 
+                                FBSurveyAnswers.child("section" + sectionIndex).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf(vv.getId())).getRef().setValue(text);
+
                                 //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
                                 //Log.d("CHECKBOX", String.valueOf(vv.getId()) + ") " + text );
                             }
                         }
                     }
+
+                    FBSurveyAnswers.child("section" + sectionIndex).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(3);
+
+                    questionIndex++;
                 }
             }
         }
+
+        FBReferenceUser.child(currentUser.getUid()).child("surveys").child(extras.getString(EXTRA_KEY)).getRef().setValue(false);
     }
 }
