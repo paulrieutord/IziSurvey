@@ -180,19 +180,48 @@ public class survey_questions extends AppCompatActivity {
             View v = layout.getChildAt(i);
 
             if (v instanceof RadioGroup) {
-                if (((RadioGroup) v).getCheckedRadioButtonId() != -1) {
-                    int idRadioButton = ((RadioGroup) v).getCheckedRadioButtonId();
-                    View radioButton = v.findViewById(idRadioButton);
-                    int radioId = ((RadioGroup) v).indexOfChild(radioButton);
-                    RadioButton btn = (RadioButton) ((RadioGroup) v).getChildAt(radioId);
-                    String selection = (String) btn.getText();
-
-                    //Log.d("SELECCION", idRadioButton + ") " + selection);
-                } else {
+                if (((RadioGroup) v).getCheckedRadioButtonId() == -1) {
                     isValid = false;
                 }
             } else if (v instanceof EditText) {
-                String text = ((EditText) v).getText().toString();
+                if (((EditText) v).getText().toString().trim().length() == 0) {
+                    isValid = false;
+                }
+            } else if (v instanceof LinearLayout) {
+                boolean isChecked = false;
+                for (int j = 0; j < ((LinearLayout) v).getChildCount(); j++) {
+                    View vv = ((LinearLayout) v).getChildAt(j);
+
+                    if (vv instanceof CheckBox) {
+                        if (((CheckBox) vv).isChecked()) {
+                            isChecked = true;
+                        }
+                    }
+                }
+
+                if (!isChecked) {
+                    isValid = false;
+                }
+            }
+        }
+        return isValid;
+    }
+
+    public void sendData(LinearLayout layout) {
+
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+
+            if (v instanceof RadioGroup) {
+                int idRadioButton = ((RadioGroup) v).getCheckedRadioButtonId();
+                View radioButton = v.findViewById(idRadioButton);
+                int radioId = ((RadioGroup) v).indexOfChild(radioButton);
+                RadioButton btn = (RadioButton) ((RadioGroup) v).getChildAt(radioId);
+                String selection = (String) btn.getText();
+
+                //Log.d("SELECCION", idRadioButton + ") " + selection);
+            } else if (v instanceof EditText) {
+                String text = ((EditText) v).getText().toString().trim();
 
                 //Log.d("TEXT", text);
             } else if (v instanceof LinearLayout) {
@@ -209,6 +238,5 @@ public class survey_questions extends AppCompatActivity {
                 }
             }
         }
-        return isValid;
     }
 }
