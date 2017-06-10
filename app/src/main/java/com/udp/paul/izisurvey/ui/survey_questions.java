@@ -1,5 +1,6 @@
 package com.udp.paul.izisurvey.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -172,6 +173,9 @@ public class survey_questions extends AppCompatActivity {
                     public void onClick(View v) {
                         if (formIsValid(container_layout)) {
                             sendData(container_layout);
+
+                            Toast.makeText(getApplicationContext(), "Encuesta respondida correctamente", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), home.class));
                         } else {
                             Toast.makeText(getApplicationContext(), "Debe responder todas las preguntas.", Toast.LENGTH_SHORT).show();
                         }
@@ -240,16 +244,16 @@ public class survey_questions extends AppCompatActivity {
                 RadioButton btn = (RadioButton) ((RadioGroup) v).getChildAt(radioId);
                 String selection = (String) btn.getText();
 
-                Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
-                Log.d("SELECCION", idRadioButton + ") " + selection);
+                //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                //Log.d("SELECCION", idRadioButton + ") " + selection);
             } else if (v instanceof LinearLayout) {
                 View vvv = ((LinearLayout) v).getChildAt(1);
 
                 if (vvv instanceof EditText) {
                     String text = ((EditText) vvv).getText().toString().trim();
 
-                    Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
-                    Log.d("TEXT", text);
+                    //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                    //Log.d("TEXT", text);
                 } else if (vvv instanceof CheckBox) {
                     for (int j = 0; j < ((LinearLayout) v).getChildCount(); j++) {
                         View vv = ((LinearLayout) v).getChildAt(j);
@@ -258,8 +262,8 @@ public class survey_questions extends AppCompatActivity {
                             if (((CheckBox) vv).isChecked()) {
                                 String text = ((CheckBox) vv).getText().toString();
 
-                                Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
-                                Log.d("CHECKBOX", String.valueOf(vv.getId()) + ") " + text );
+                                //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                                //Log.d("CHECKBOX", String.valueOf(vv.getId()) + ") " + text );
                             }
                         }
                     }
