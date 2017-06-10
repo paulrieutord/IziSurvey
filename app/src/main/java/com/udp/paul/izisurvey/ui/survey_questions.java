@@ -16,6 +16,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +36,8 @@ public class survey_questions extends AppCompatActivity {
 
     private FirebaseDatabase FBDatabase;
     private DatabaseReference FBReference;
+    private DatabaseReference FBSurveyAnswers;
+    private FirebaseUser currentUser;
     private Query queryRef;
 
     LinearLayout container_layout;
@@ -80,17 +84,13 @@ public class survey_questions extends AppCompatActivity {
                         title.setText(titleString);
                         title.setTextColor(Color.BLACK);
 
-                        container_layout.addView(title);
-
-                        LinearLayout.LayoutParams textViewParams = (LinearLayout.LayoutParams) title.getLayoutParams();
-                        textViewParams.setMargins(0, 0, 0, 40);
-                        title.setLayoutParams(textViewParams);
-
                         switch (type) {
                             //ONLY ONE OPTION
                             case "1":
                                 RadioGroup group = new RadioGroup(getApplicationContext());
                                 group.setOrientation(RadioGroup.VERTICAL);
+
+                                group.addView(title);
 
                                 for (DataSnapshot options : snapshot.child("options").getChildren()) {
                                     String option = String.valueOf(options.getValue());
@@ -111,11 +111,16 @@ public class survey_questions extends AppCompatActivity {
                                 break;
                             //TEXT AS ANSWER
                             case "2":
+                                LinearLayout editTextLayout = new LinearLayout(getApplicationContext());
+                                editTextLayout.setOrientation(RadioGroup.VERTICAL);
+
                                 EditText textAnswer = new EditText(getApplicationContext());
                                 textAnswer.setMaxLines(5);
                                 textAnswer.setTextColor(Color.BLACK);
 
-                                container_layout.addView(textAnswer);
+                                editTextLayout.addView(title);
+                                editTextLayout.addView(textAnswer);
+                                container_layout.addView(editTextLayout);
 
                                 LinearLayout.LayoutParams editParams = (LinearLayout.LayoutParams) textAnswer.getLayoutParams();
                                 editParams.setMargins(0, 0, 0, 30);
@@ -127,6 +132,8 @@ public class survey_questions extends AppCompatActivity {
                             case "3":
                                 LinearLayout checkGroup = new LinearLayout(getApplicationContext());
                                 checkGroup.setOrientation(RadioGroup.VERTICAL);
+
+                                checkGroup.addView(title);
 
                                 for (DataSnapshot options : snapshot.child("options").getChildren()) {
                                     String option = String.valueOf(options.getValue());
@@ -146,6 +153,10 @@ public class survey_questions extends AppCompatActivity {
 
                                 break;
                         }
+
+                        LinearLayout.LayoutParams textViewParams = (LinearLayout.LayoutParams) title.getLayoutParams();
+                        textViewParams.setMargins(0, 0, 0, 40);
+                        title.setLayoutParams(textViewParams);
                     }
                 }
 
@@ -160,7 +171,7 @@ public class survey_questions extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (formIsValid(container_layout)) {
-
+                            sendData(container_layout);
                         } else {
                             Toast.makeText(getApplicationContext(), "Debe responder todas las preguntas.", Toast.LENGTH_SHORT).show();
                         }
@@ -183,24 +194,28 @@ public class survey_questions extends AppCompatActivity {
                 if (((RadioGroup) v).getCheckedRadioButtonId() == -1) {
                     isValid = false;
                 }
-            } else if (v instanceof EditText) {
-                if (((EditText) v).getText().toString().trim().length() == 0) {
-                    isValid = false;
-                }
             } else if (v instanceof LinearLayout) {
-                boolean isChecked = false;
-                for (int j = 0; j < ((LinearLayout) v).getChildCount(); j++) {
-                    View vv = ((LinearLayout) v).getChildAt(j);
+                View vvv = ((LinearLayout) v).getChildAt(1);
 
-                    if (vv instanceof CheckBox) {
-                        if (((CheckBox) vv).isChecked()) {
-                            isChecked = true;
+                if (vvv instanceof EditText) {
+                    if (((EditText) vvv).getText().toString().trim().length() == 0) {
+                        isValid = false;
+                    }
+                } else if (vvv instanceof CheckBox) {
+                    boolean isChecked = false;
+                    for (int j = 0; j < ((LinearLayout) v).getChildCount(); j++) {
+                        View vv = ((LinearLayout) v).getChildAt(j);
+
+                        if (vv instanceof  CheckBox) {
+                            if (((CheckBox) vv).isChecked()) {
+                                isChecked = true;
+                            }
                         }
                     }
-                }
 
-                if (!isChecked) {
-                    isValid = false;
+                    if (!isChecked) {
+                        isValid = false;
+                    }
                 }
             }
         }
@@ -209,30 +224,43 @@ public class survey_questions extends AppCompatActivity {
 
     public void sendData(LinearLayout layout) {
 
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FBSurveyAnswers = FBDatabase.getReference("surveyAnswers").child(currentUser.getUid()).child(extras.getString(EXTRA_KEY));
+
+        int sectionIndex = 0;
+
         for (int i = 0; i < layout.getChildCount(); i++) {
             View v = layout.getChildAt(i);
-
-            if (v instanceof RadioGroup) {
+            if (v instanceof TextView) {
+                sectionIndex++;
+            } else if (v instanceof RadioGroup) {
                 int idRadioButton = ((RadioGroup) v).getCheckedRadioButtonId();
                 View radioButton = v.findViewById(idRadioButton);
                 int radioId = ((RadioGroup) v).indexOfChild(radioButton);
                 RadioButton btn = (RadioButton) ((RadioGroup) v).getChildAt(radioId);
                 String selection = (String) btn.getText();
 
-                //Log.d("SELECCION", idRadioButton + ") " + selection);
-            } else if (v instanceof EditText) {
-                String text = ((EditText) v).getText().toString().trim();
-
-                //Log.d("TEXT", text);
+                Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                Log.d("SELECCION", idRadioButton + ") " + selection);
             } else if (v instanceof LinearLayout) {
-                for (int j = 0; j < ((LinearLayout) v).getChildCount(); j++) {
-                    View vv = ((LinearLayout) v).getChildAt(j);
+                View vvv = ((LinearLayout) v).getChildAt(1);
 
-                    if (vv instanceof CheckBox) {
-                        if (((CheckBox) vv).isChecked()) {
-                            String text = ((CheckBox) vv).getText().toString();
+                if (vvv instanceof EditText) {
+                    String text = ((EditText) vvv).getText().toString().trim();
 
-                            //Log.d("CHECKBOX", String.valueOf(vv.getId()) + ") " + text );
+                    Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                    Log.d("TEXT", text);
+                } else if (vvv instanceof CheckBox) {
+                    for (int j = 0; j < ((LinearLayout) v).getChildCount(); j++) {
+                        View vv = ((LinearLayout) v).getChildAt(j);
+
+                        if (vv instanceof CheckBox) {
+                            if (((CheckBox) vv).isChecked()) {
+                                String text = ((CheckBox) vv).getText().toString();
+
+                                Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                                Log.d("CHECKBOX", String.valueOf(vv.getId()) + ") " + text );
+                            }
                         }
                     }
                 }
