@@ -78,7 +78,7 @@ public class SurveysAnsweredViewHolder extends RecyclerView.ViewHolder implement
                     }
                 });
 
-                String formatDate = new SimpleDateFormat("HH:mm", Locale.US).format(eventObject.getCreatedAt())+" hrs.";
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(eventObject.getCreatedAt())+" hrs.";
                 expireDateSurvey.setText(formatDate);
             }
 
