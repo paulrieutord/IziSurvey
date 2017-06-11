@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -23,11 +24,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udp.paul.izisurvey.R;
+import com.udp.paul.izisurvey.model.Survey;
 import com.udp.paul.izisurvey.model.User;
 
 public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FirebaseDatabase DBFirebase;
     private DatabaseReference mDatabase;
+    private DatabaseReference FBSurveys;
+    private DatabaseReference FBUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
+        checkAvailable();
     }
 
     @Override
@@ -136,5 +143,49 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void checkAvailable() {
+        DBFirebase = FirebaseDatabase.getInstance();
+
+        FBUsers = DBFirebase.getReference("users");
+
+        FBSurveys = DBFirebase.getReference("surveys");
+        FBSurveys.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshotSurvey : dataSnapshot.getChildren()) {
+                    final String keySurvey = snapshotSurvey.getKey();
+                    long finishDate = snapshotSurvey.getValue(Survey.class).getFinishDate();
+                    long longCurrentDate = System.currentTimeMillis();
+
+                    if (longCurrentDate > finishDate) {
+                        for (DataSnapshot snapshotUser : snapshotSurvey.child("users").getChildren()) {
+                            final String userUID = snapshotUser.getKey();
+
+                            FBUsers.child(userUID).child("surveys").child(keySurvey).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (String.valueOf(dataSnapshot.getValue()) == "true") {
+                                        FBUsers.child(userUID).child("surveys").child(keySurvey).getRef().removeValue();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
