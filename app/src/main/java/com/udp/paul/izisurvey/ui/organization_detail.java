@@ -164,7 +164,7 @@ public class organization_detail extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             long size = dataSnapshot.getChildrenCount();
-                            FBReferenceUser.child(user.getUid()).child("organizations").child(String.valueOf(size)).getRef().setValue(extras.getString(EXTRA_TITLE));
+                            FBReferenceUser.child(user.getUid()).child("organizations").child(String.valueOf(size)).getRef().setValue(extras.getString(EXTRA_KEY));
                         }
 
                         @Override
