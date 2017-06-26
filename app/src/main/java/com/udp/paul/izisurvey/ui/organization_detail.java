@@ -62,7 +62,7 @@ public class organization_detail extends AppCompatActivity {
 
         extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
 
-        imageReference.child("Photos/"+extras.getString(EXTRA_KEY)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        imageReference.child("Photos/Organizations/"+extras.getString(EXTRA_KEY)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso
@@ -91,7 +91,7 @@ public class organization_detail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (childExists) {
-                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").child(user.getUid()).getRef().removeValue();
+                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").equalTo(user.getUid()).getRef().removeValue();
                     FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addValueEventListener(new ValueEventListener(){
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -117,12 +117,24 @@ public class organization_detail extends AppCompatActivity {
                         }
                     });
 
-                    FBReferenceUser.child(user.getUid()).child("organizations").child(extras.getString(EXTRA_KEY)).getRef().removeValue();
+                    FBReferenceUser.child(user.getUid()).child("organizations").equalTo(extras.getString(EXTRA_KEY)).getRef().removeValue();
                     fab.setImageResource(R.drawable.ic_menu_add);
                     fab.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
                     childExists = false;
                 } else {
-                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").child(user.getUid()).getRef().setValue(true);
+                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            long size = dataSnapshot.getChildrenCount();
+                            FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").child(String.valueOf(size)).getRef().setValue(user.getUid());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addValueEventListener(new ValueEventListener(){
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -148,7 +160,19 @@ public class organization_detail extends AppCompatActivity {
                         }
                     });
 
-                    FBReferenceUser.child(user.getUid()).child("organizations").child(extras.getString(EXTRA_KEY)).getRef().setValue(extras.getString(EXTRA_TITLE));
+                    FBReferenceUser.child(user.getUid()).child("organizations").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            long size = dataSnapshot.getChildrenCount();
+                            FBReferenceUser.child(user.getUid()).child("organizations").child(String.valueOf(size)).getRef().setValue(extras.getString(EXTRA_TITLE));
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     fab.setImageResource(R.drawable.ic_check_black_24px);
                     fab.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent));
                     childExists = true;
@@ -181,14 +205,28 @@ public class organization_detail extends AppCompatActivity {
                         category.setText(organizationObject.getCategory());
                         description.setText(organizationObject.getDescription());
 
-                        if (dataSnapshot.child("users").hasChild(user.getUid())) {
+                        childExists = false;
+
+                        if (dataSnapshot.child("users").exists()) {
+                            for (DataSnapshot users : dataSnapshot.child("users").getChildren()) {
+                                Log.d("UID ORG DETAL", String.valueOf(users.getValue()) + " == " + user.getUid());
+
+                                String valueKey = String.valueOf(users.getValue());
+                                if (valueKey.equals(user.getUid())) {
+                                    Log.d("SON IGUALES", "SI");
+                                    childExists = true;
+                                }
+                            }
+                        }
+
+                        if (childExists) {
+                            Log.d("EXISTE", "SI");
                             fab.setImageResource(R.drawable.ic_check_black_24px);
                             fab.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent));
-                            childExists = true;
                         } else {
+                            Log.d("EXISTE", "NO");
                             fab.setImageResource(R.drawable.ic_menu_add);
                             fab.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
-                            childExists = false;
                         }
                     }
 
