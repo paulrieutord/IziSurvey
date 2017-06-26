@@ -68,7 +68,18 @@ public class OrganizationViewHolder extends RecyclerView.ViewHolder implements V
                         // Get user value
                         Organization organizationObject = dataSnapshot.getValue(Organization.class);
                         name.setText(organizationObject.getName());
-                        category.setText(organizationObject.getCategory());
+
+                        mDatabase.child("category").child(organizationObject.getCategory()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                category.setText(String.valueOf(dataSnapshot.getValue()));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
 
                     @Override

@@ -202,7 +202,18 @@ public class organization_detail extends AppCompatActivity {
                         Organization organizationObject = dataSnapshot.getValue(Organization.class);
                         collapsingToolbarLayout.setTitle(organizationObject.getName());
 
-                        category.setText(organizationObject.getCategory());
+                        FBDatabase.getReference("category").child(organizationObject.getCategory()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                category.setText(String.valueOf(dataSnapshot.getValue()));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                         description.setText(organizationObject.getDescription());
 
                         childExists = false;
