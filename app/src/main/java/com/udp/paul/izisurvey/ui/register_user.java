@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -272,6 +273,7 @@ public class register_user extends AppCompatActivity implements View.OnClickList
 
                 Log.e("USER_CHANGED", "User data is changed!" + user.getName() + ", " + user.getEmail());
 
+                Toast.makeText(getApplicationContext(), "Registrado exitosamente! Bienvenido " + user.getUserName(), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), home.class));
             }
 

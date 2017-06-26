@@ -32,6 +32,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.udp.paul.izisurvey.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -56,6 +61,9 @@ public class login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
     private Button mEmailSignInButton;
     private TextView registerUser;
     private TextView forgotPassword;
+    private FirebaseDatabase FBDataBase;
+    private DatabaseReference DBReference;
+    private boolean userExist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +90,36 @@ public class login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
 
         mAuth = FirebaseAuth.getInstance();
 
+        FBDataBase = FirebaseDatabase.getInstance();
+        DBReference = FBDataBase.getReference("users");
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
                     // User is signed in
-                    Log.d("SIGN_IN", "onAuthStateChanged:signed_in:" + user.getUid());
-                    startActivity(new Intent(getApplicationContext(), home.class));
 
+                    DBReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            userExist = dataSnapshot.exists();
+                            Log.d("USEREXIST", String.valueOf(userExist));
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    if (userExist) {
+                        Log.d("SIGN_IN", "onAuthStateChanged:signed_in:" + user.getUid());
+                        startActivity(new Intent(getApplicationContext(), home.class));
+                    } else {
+                        FirebaseAuth.getInstance().signOut();
+                    }
                 } else {
                     // User is signed out
                     Log.d("SIGN_OUT", "onAuthStateChanged:signed_out");
