@@ -254,12 +254,12 @@ public class survey_questions extends AppCompatActivity {
                 RadioButton btn = (RadioButton) ((RadioGroup) v).getChildAt(radioId);
                 String selection = (String) btn.getText();
 
-                FBSurveyAnswers.child(String.valueOf(sectionIndex)).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf(idRadioButton)).getRef().setValue(selection);
-                FBSurveyAnswers.child(String.valueOf(sectionIndex)).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(1);
+                FBSurveyAnswers.child(String.valueOf(sectionIndex - 1)).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf(idRadioButton)).getRef().setValue(selection);
+                FBSurveyAnswers.child(String.valueOf(sectionIndex - 1)).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(1);
 
                 questionIndex++;
 
-                //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                //Log.d("SECTION_INDEX", String.valueOf(sectionIndex - 1));
                 //Log.d("SELECCION", idRadioButton + ") " + selection);
             } else if (v instanceof LinearLayout) {
                 View vvv = ((LinearLayout) v).getChildAt(1);
@@ -267,12 +267,12 @@ public class survey_questions extends AppCompatActivity {
                 if (vvv instanceof EditText) {
                     String text = ((EditText) vvv).getText().toString().trim();
 
-                    FBSurveyAnswers.child(String.valueOf(sectionIndex)).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf("text")).getRef().setValue(text);
-                    FBSurveyAnswers.child(String.valueOf(sectionIndex)).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(2);
+                    FBSurveyAnswers.child(String.valueOf(sectionIndex - 1)).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf("text")).getRef().setValue(text);
+                    FBSurveyAnswers.child(String.valueOf(sectionIndex - 1)).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(2);
 
                     questionIndex++;
 
-                    //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                    //Log.d("SECTION_INDEX", String.valueOf(sectionIndex - 1));
                     //Log.d("TEXT", text);
                 } else if (vvv instanceof CheckBox) {
                     for (int j = 0; j < ((LinearLayout) v).getChildCount(); j++) {
@@ -282,15 +282,15 @@ public class survey_questions extends AppCompatActivity {
                             if (((CheckBox) vv).isChecked()) {
                                 String text = ((CheckBox) vv).getText().toString();
 
-                                FBSurveyAnswers.child(String.valueOf(sectionIndex)).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf(vv.getId())).getRef().setValue(text);
+                                FBSurveyAnswers.child(String.valueOf(sectionIndex - 1)).child(questionKeys.get(questionIndex)).child("answer").child(String.valueOf(vv.getId())).getRef().setValue(text);
 
-                                //Log.d("SECTION_INDEX", String.valueOf(sectionIndex));
+                                //Log.d("SECTION_INDEX", String.valueOf(sectionIndex - 1));
                                 //Log.d("CHECKBOX", String.valueOf(vv.getId()) + ") " + text );
                             }
                         }
                     }
 
-                    FBSurveyAnswers.child(String.valueOf(sectionIndex)).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(3);
+                    FBSurveyAnswers.child(String.valueOf(sectionIndex - 1)).child(questionKeys.get(questionIndex)).child("type").getRef().setValue(3);
 
                     questionIndex++;
                 }
