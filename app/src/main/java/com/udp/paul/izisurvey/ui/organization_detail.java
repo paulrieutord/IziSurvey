@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -47,6 +48,7 @@ public class organization_detail extends AppCompatActivity {
     private DatabaseReference FBReferenceSurveyAnswer;
     private StorageReference imageReference;
     private FirebaseUser user;
+    private Query queryRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,23 @@ public class organization_detail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (childExists) {
-                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").equalTo(user.getUid()).getRef().removeValue();
+                    queryRef = FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").orderByValue().equalTo(user.getUid());
+
+                    queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                Log.d("USER_SNAPSHOT", userSnapshot.getKey() + " - " + userSnapshot.getValue());
+                                userSnapshot.getRef().removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addValueEventListener(new ValueEventListener(){
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -117,7 +135,23 @@ public class organization_detail extends AppCompatActivity {
                         }
                     });
 
-                    FBReferenceUser.child(user.getUid()).child("organizations").equalTo(extras.getString(EXTRA_KEY)).getRef().removeValue();
+                    queryRef = FBReferenceUser.child(user.getUid()).child("organizations").orderByValue().equalTo(extras.getString(EXTRA_KEY));
+
+                    queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot organizationSnapshot : dataSnapshot.getChildren()) {
+                                Log.d("ORG_SNAPSHOT", organizationSnapshot.getKey() + " - " + organizationSnapshot.getValue());
+                                organizationSnapshot.getRef().removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     fab.setImageResource(R.drawable.ic_menu_add);
                     fab.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
                     childExists = false;
