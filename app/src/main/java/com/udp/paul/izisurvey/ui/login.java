@@ -101,7 +101,7 @@ public class login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
                 if (user != null) {
                     // User is signed in
 
-                    DBReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    /*DBReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             userExist = dataSnapshot.exists();
@@ -119,7 +119,10 @@ public class login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
                         startActivity(new Intent(getApplicationContext(), home.class));
                     } else {
                         FirebaseAuth.getInstance().signOut();
-                    }
+                    }*/
+
+                    Log.d("SIGN_IN", "onAuthStateChanged:signed_in:" + user.getUid());
+                    startActivity(new Intent(getApplicationContext(), home.class));
                 } else {
                     // User is signed out
                     Log.d("SIGN_OUT", "onAuthStateChanged:signed_out");
