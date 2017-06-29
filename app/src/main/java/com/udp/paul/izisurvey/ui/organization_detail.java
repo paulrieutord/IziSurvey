@@ -159,8 +159,23 @@ public class organization_detail extends AppCompatActivity {
                     FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            long size = dataSnapshot.getChildrenCount();
-                            FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").child(String.valueOf(size)).getRef().setValue(user.getUid());
+
+                            Query addQuery = FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").orderByKey().limitToLast(1);
+                            addQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                        Log.d("CHILD", childSnapshot.getKey());
+                                        int key = Integer.valueOf(childSnapshot.getKey());
+                                        FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("users").child(String.valueOf(key + 1)).getRef().setValue(user.getUid());
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                         }
 
                         @Override
