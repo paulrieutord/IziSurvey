@@ -135,7 +135,7 @@ public class organization_detail extends AppCompatActivity {
                         }
                     });
 
-                    queryRef = FBReferenceUser.child(user.getUid()).child("organizations").orderByValue().equalTo(extras.getString(EXTRA_KEY));
+                    /*queryRef = FBReferenceUser.child(user.getUid()).child("organizations").orderByValue().equalTo(extras.getString(EXTRA_KEY));
 
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -150,7 +150,7 @@ public class organization_detail extends AppCompatActivity {
                         public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    });
+                    });*/
 
                     fab.setImageResource(R.drawable.ic_menu_add);
                     fab.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
@@ -194,7 +194,7 @@ public class organization_detail extends AppCompatActivity {
                         }
                     });
 
-                    FBReferenceUser.child(user.getUid()).child("organizations").addListenerForSingleValueEvent(new ValueEventListener() {
+                    /*FBReferenceUser.child(user.getUid()).child("organizations").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             long size = dataSnapshot.getChildrenCount();
@@ -205,7 +205,7 @@ public class organization_detail extends AppCompatActivity {
                         public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    });
+                    });*/
 
                     fab.setImageResource(R.drawable.ic_check_black_24px);
                     fab.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent));
