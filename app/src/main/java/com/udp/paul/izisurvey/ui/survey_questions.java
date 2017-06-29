@@ -66,7 +66,7 @@ public class survey_questions extends AppCompatActivity {
 
         FBReferenceUser = FBDatabase.getReference("users");
 
-        queryRef.addValueEventListener(new ValueEventListener() {
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshotSection : dataSnapshot.getChildren()) {

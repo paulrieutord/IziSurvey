@@ -58,7 +58,7 @@ public class SurveysAnsweredViewHolder extends RecyclerView.ViewHolder implement
         expireDateSurvey = (TextView) itemView.findViewById(R.id.expire_date_survey_item);
         mView.setOnClickListener(this);
 
-        mDatabase.child("surveys").child(mKey).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("surveys").child(mKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Survey eventObject = dataSnapshot.getValue(Survey.class);

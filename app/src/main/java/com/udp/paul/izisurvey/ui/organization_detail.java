@@ -110,7 +110,7 @@ public class organization_detail extends AppCompatActivity {
                         }
                     });
 
-                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addValueEventListener(new ValueEventListener(){
+                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addListenerForSingleValueEvent(new ValueEventListener(){
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -169,7 +169,7 @@ public class organization_detail extends AppCompatActivity {
                         }
                     });
 
-                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addValueEventListener(new ValueEventListener(){
+                    FBReferenceOrganization.child(extras.getString(EXTRA_KEY)).child("surveys").addListenerForSingleValueEvent(new ValueEventListener(){
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {

@@ -163,7 +163,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                         for (DataSnapshot snapshotUser : snapshotSurvey.child("users").getChildren()) {
                             final String userUID = snapshotUser.getKey();
 
-                            FBUsers.child(userUID).child("surveys").child(keySurvey).addValueEventListener(new ValueEventListener() {
+                            FBUsers.child(userUID).child("surveys").child(keySurvey).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (String.valueOf(dataSnapshot.getValue()) == "true") {
