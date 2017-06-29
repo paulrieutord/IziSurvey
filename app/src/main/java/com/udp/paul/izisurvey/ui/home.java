@@ -156,7 +156,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshotSurvey : dataSnapshot.getChildren()) {
                     final String keySurvey = snapshotSurvey.getKey();
-                    long finishDate = snapshotSurvey.getValue(Survey.class).getFinishDate();
+                    long finishDate = Long.valueOf(snapshotSurvey.getValue(Survey.class).getFinishDate());
                     long longCurrentDate = System.currentTimeMillis();
 
                     if (longCurrentDate > finishDate) {

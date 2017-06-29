@@ -6,12 +6,12 @@ public class User {
     private String userName;
     private String email;
     private String rol;
-    private long createdAt;
+    private String createdAt;
 
     public User (){
     }
 
-    public User (String name, String lastName, String userName, String email, String rol, long createdAt) {
+    public User (String name, String lastName, String userName, String email, String rol, String createdAt) {
         this.name = name;
         this.lastName = lastName;
         this.userName = userName;
@@ -40,7 +40,7 @@ public class User {
         return rol;
     }
 
-    public long getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 }

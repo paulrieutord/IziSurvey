@@ -102,7 +102,7 @@ public class survey_questions extends AppCompatActivity {
                                 group.addView(title);
 
                                 for (DataSnapshot options : snapshot.child("options").getChildren()) {
-                                    String option = String.valueOf(options.getValue());
+                                    String option = String.valueOf(options.child("option").getValue());
 
                                     RadioButton opt = new RadioButton(getApplicationContext());
                                     opt.setText(option);
@@ -145,7 +145,7 @@ public class survey_questions extends AppCompatActivity {
                                 checkGroup.addView(title);
 
                                 for (DataSnapshot options : snapshot.child("options").getChildren()) {
-                                    String option = String.valueOf(options.getValue());
+                                    String option = String.valueOf(options.child("option").getValue());
 
                                     CheckBox opt = new CheckBox(getApplicationContext());
                                     opt.setText(option);

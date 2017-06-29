@@ -2,16 +2,16 @@ package com.udp.paul.izisurvey.model;
 
 public class Survey {
     private String name;
-    private long createdAt;
+    private String createdAt;
     private String organization;
     private String createdBy;
-    private long initDate;
-    private long finishDate;
+    private String initDate;
+    private String finishDate;
 
     public Survey() {
     }
 
-    public Survey(String name, long createdAt, String organization, String createdBy, long initDate, long finishDate) {
+    public Survey(String name, String createdAt, String organization, String createdBy, String initDate, String finishDate) {
         this.name = name;
         this.createdAt = createdAt;
         this.organization = organization;
@@ -28,11 +28,11 @@ public class Survey {
         this.name = name;
     }
 
-    public long getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -52,19 +52,19 @@ public class Survey {
         this.createdBy = createdBy;
     }
 
-    public long getInitDate() {
+    public String getInitDate() {
         return initDate;
     }
 
-    public void setInitDate(long initDate) {
+    public void setInitDate(String initDate) {
         this.initDate = initDate;
     }
 
-    public long getFinishDate() {
+    public String getFinishDate() {
         return finishDate;
     }
 
-    public void setFinishDate(long finishDate) {
+    public void setFinishDate(String finishDate) {
         this.finishDate = finishDate;
     }
 }

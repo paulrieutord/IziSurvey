@@ -80,7 +80,7 @@ public class SurveysAvailableViewHolder extends RecyclerView.ViewHolder implemen
                     }
                 });
 
-                String formatDate = new SimpleDateFormat("dd-MM-yyy HH:mm", Locale.US).format(eventObject.getFinishDate())+" hrs.";
+                String formatDate = new SimpleDateFormat("dd-MM-yyy HH:mm", Locale.US).format(Long.valueOf(eventObject.getFinishDate()))+" hrs.";
                 expireDateSurvey.setText(formatDate);
             }
 
